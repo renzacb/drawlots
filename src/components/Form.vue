@@ -1,10 +1,12 @@
 <template>
-  <form @submit.prevent="submitUser">
-    <!-- ref here is for getting the element's dom properties -->
-    <input type="text" ref="nameField" v-model="name" />
-    <button>Add Name</button>
-  </form>
-  <button @click="startRandomPick">Start Random Pick</button>
+  <div class="controls">
+    <form @submit.prevent="submitUser">
+      <!-- ref here is for getting the element's dom properties -->
+      <input type="text" ref="nameField" v-model="name" />
+      <button>Add Name</button>
+    </form>
+    <button @click="startRandomPick">Start Random Pick</button>
+  </div>
 </template>
 
 <script>
@@ -42,4 +44,9 @@ export default {
 </script>
 
 <style>
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
 </style>

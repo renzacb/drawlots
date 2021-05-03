@@ -3,7 +3,7 @@
     type="text"
     v-model="name"
     @keyup="update"
-    :style="{ border: user.isPicked ? '1px solid green' : '' }"
+    :style="{ border: user.isPicked ? '3px solid green' : '' }"
   />
   <button @click="remove">Remove</button>
 </template>

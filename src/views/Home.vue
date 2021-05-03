@@ -1,6 +1,8 @@
 <template>
-  <Form @name="addName" @startRandomPick="startRandomPick" />
-  <Items :users="users" ref="itemsRef" />
+  <div class="container">
+    <Form @name="addName" @startRandomPick="startRandomPick" />
+    <Items :users="users" ref="itemsRef" />
+  </div>
 </template>
 
 <script>
@@ -9,6 +11,7 @@ import Form from '../components/Form'
 import Items from '../components/Items'
 import addUser from '../composables/addUser'
 import getUsers from '../composables/getUsers'
+import startRandomPick from '../composables/startRandomPick'
 export default {
   name: 'Home',
   components: { Form, Items },
@@ -17,17 +20,18 @@ export default {
     const itemsRef = ref(null)
     const addName = (name) =>
       addUser({ id: users.value.length, name, isPicked: false })
-    const startRandomPick = () => {
-      const usersLength = users.value.length
-      const randomIndex = Math.floor(Math.random() * usersLength)
-      const randomPick = users.value[randomIndex]
-      console.log(randomPick)
-      users.value = users.value.map((user) => ({
-        ...user,
-        isPicked: user.id === randomPick.id,
-      }))
-    }
     return { users, addName, startRandomPick, itemsRef }
   },
 }
 </script>
+
+<style>
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: max(60vh, 500px);
+  width: 100%;
+}
+</style>
