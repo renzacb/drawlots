@@ -1,12 +1,15 @@
 <template>
   <div class="container">
-    <Form @name="addName" @startRandomPick="startRandomPick" />
-    <Items :users="users" ref="itemsRef" />
+    <div class="add-form">
+      <Form @name="addName" @startRandomPick="startRandomPick" />
+    </div>
+    <div class="items">
+      <Items :users="users" />
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
 import Form from '../components/Form'
 import Items from '../components/Items'
 import addUser from '../composables/addUser'
@@ -17,10 +20,15 @@ export default {
   components: { Form, Items },
   setup() {
     const { users } = getUsers()
-    const itemsRef = ref(null)
-    const addName = (name) =>
+    const addName = (name) => {
+      const names = users.value.map((user) => user.name)
+      if (names.includes(name)) {
+        alert('Name already exists, try another name.')
+        return
+      }
       addUser({ id: users.value.length, name, isPicked: false })
-    return { users, addName, startRandomPick, itemsRef }
+    }
+    return { users, addName, startRandomPick }
   },
 }
 </script>
@@ -30,8 +38,19 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: space-evenly;
-  height: max(60vh, 500px);
+  justify-content: flex-start;
+  height: max(100vh, 500px);
   width: 100%;
 }
+.add-form {
+  height: 10%;
+  width: 50%;
+  box-shadow: 2px 2px 4px 2px #bdbbbb;
+  padding: 1rem;
+  margin: 1rem;
+}
+.items {
+  width: 100%;
+}
+/* wrapper */
 </style>

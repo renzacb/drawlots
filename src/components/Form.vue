@@ -1,52 +1,105 @@
 <template>
-  <div class="controls">
-    <form @submit.prevent="submitUser">
-      <!-- ref here is for getting the element's dom properties -->
-      <input type="text" ref="nameField" v-model="name" />
-      <button>Add Name</button>
-    </form>
-    <button @click="startRandomPick">Start Random Pick</button>
-  </div>
+  <form @submit.prevent="submitUser">
+    <!-- ref here is for getting the element's dom properties -->
+    <div class="input-area">
+      <input
+        class="name-field"
+        name="name"
+        type="text"
+        v-model="name"
+        placeholder="Name"
+        required
+      />
+      <button class="add-btn">Add</button>
+      <button
+        class="random-pick-btn"
+        type="button"
+        @click="startRandomPick"
+        :disabled="startRandomPickDisabled"
+      >
+        Start Random Pick
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
 import { ref } from '@vue/reactivity'
+import { computed } from '@vue/runtime-core'
 export default {
   emits: ['name', 'startRandomPick'],
-  // setup funtcon fires before mounted and created lifecycle hooks
+  // setup function fires before mounted and created lifecycle hooks
   setup(props, { emit }) {
     const name = ref('')
-    const nameField = ref(null)
+    const startRandomPickDisabled = ref(false)
     const submitUser = () => {
       emit('name', name.value)
       name.value = ''
     }
-    const startRandomPick = () => emit('startRandomPick')
-    return { name, submitUser, nameField, startRandomPick }
-    /**
-    -> ADD ANIMATIONS, GOOD UI STYLING
-    FORM 
-      - add label, name to CARDS GRID LIST
-      - edit or delete a name on the list
-      - set waiting time (in seconds)
-      - add photo?
-    CARDS GRID LIST
-      - display card on form add
-    RANDOM
-      - set waiting time and random picker animation
-      - set modal with winner/chosen name
-    SAVING
-      - pay me first!
-      - random name
-     */
+    const startRandomPick = async () => {
+      startRandomPickDisabled.value = true
+      emit('startRandomPick')
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+      startRandomPickDisabled.value = false
+    }
+    return {
+      name,
+      submitUser,
+      startRandomPick,
+      startRandomPickDisabled,
+    }
   },
 }
 </script>
 
 <style>
-.controls {
+form {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
-  width: 100%;
+  width: 90%;
+  height: 100%;
+  margin: auto;
+}
+.input-area {
+  display: flex;
+  gap: 1rem;
+}
+input[type='text'] {
+  width: 50%;
+  background-color: #fffdfd;
+  color: #000000;
+}
+.name-field,
+.add-btn,
+.random-pick-btn {
+  padding: 8px;
+  font-size: 12px;
+  border-width: 1px;
+  border-style: solid;
+  background: transparent;
+  font-weight: 900;
+  border-radius: 3px;
+}
+.add-btn,
+.random-pick-btn {
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #ffffff;
+  border: none;
+}
+.add-btn {
+  width: 20%;
+  background-color: #28da04;
+}
+.random-pick-btn {
+  width: 30%;
+  background-color: #052de0;
+}
+@media (max-width: 425px) {
+  .input-area {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
-  <div v-for="user of users" :key="user.id">
-    <Item :user="user" @update="update" @remove="remove" />
+  <div class="grid">
+    <div class="item-wrapper" v-for="user of users" :key="user.id">
+      <Item :user="user" @update="update" @remove="remove" />
+    </div>
   </div>
 </template>
 
@@ -24,4 +26,15 @@ export default {
 </script>
 
 <style>
+.item-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: auto 1rem;
+  padding: 1rem;
+}
 </style>
